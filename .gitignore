@@ -31,3 +31,5 @@ bin/
 *.iml
 out/
 .DS_Store
+.idea/
+*.iml
