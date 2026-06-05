@@ -1,22 +1,41 @@
-public class ReminderSchedule implements Displayable {
-    private final String reminderSchdule;
-    private final String reminderMessage;
-    private final String notificationType;
-    private final String isRemindSent;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-    public static void main(String[] args) {
+public class ReminderSchedule extends ScheduleItem {
+    private LocalDateTime reminderTime;
+    private String reminderMessage;
+    private boolean remindSent;
 
-    }
     public ReminderSchedule(
-            String reminderSchedule, String reminderMessage, String notificationType, String isRemindeSent){
-        this.reminderSchdule = reminderSchedule;
+            int id,
+            String title,
+            String description,
+            Priority priority,
+            TaskStatus taskStatus,
+            NotificationType notificationType,
+            LocalDate startDate,
+            LocalDate endDate,
+            LocalDateTime startTime,
+            LocalDateTime endTime,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt,
+            boolean isCompleted,
+            LocalDateTime reminderTime,
+            String reminderMessage,
+            boolean remindSent) {
+        super(id, title, description, priority, taskStatus, notificationType,
+                startDate, endDate, startTime, endTime, createdAt, updatedAt, isCompleted);
+        this.reminderTime = reminderTime;
         this.reminderMessage = reminderMessage;
-        this.notificationType = notificationType;
-        this.isRemindSent = isRemindeSent;
+        this.remindSent = remindSent;
     }
 
     @Override
     public void displayinfo() {
-
+        super.displayinfo();
+        System.out.println("종류: 알림 일정");
+        System.out.println("알림 시간: " + reminderTime);
+        System.out.println("알림 메시지: " + reminderMessage);
+        System.out.println("알림 발송 여부: " + remindSent);
     }
 }

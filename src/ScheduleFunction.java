@@ -1,66 +1,29 @@
-import java.util.Scanner;
-
 public interface ScheduleFunction {
-    default void addSchedule(
-            schedule[]
-            size++;
-    ) {
+    public void addSchedule();
 
-    }
+    public void displayAllSchedules();
 
-    default void displayAllSchedules() {
+    public void displayScheduleByID();
 
-    }
+    public void updateSchedule();
 
-    default void displayScheduleByID() {
+    public void deleteSchedule();
 
-    }
+    public void completeSchedule();
 
-    default void updateSchedule() {
+    public void searchByTitle();
 
-    }
+    public void searchByDate();
 
-    default void updateScheduleByID() {
+    public void searchByPriority();
 
-    }
+    public void sortByDate();
 
-    default void deleteSchedule() {
+    public void sortByPriority();
 
-    }
+    public void sortByCompletion();
 
-    default void completeSchedule() {
+    public void checkConflict();
 
-    }
-
-    default void searchByTitle() {
-
-    }
-
-    default void searchByDate() {
-
-    }
-
-    default void searchByPriority() {
-
-    }
-
-    default void sortByDate() {
-
-    }
-
-    default void sortByPriority() {
-
-    }
-
-    default void sortByCompletion() {
-
-    }
-
-    default void CheckConflict() {
-
-    }
-
-    default void runNotification() {
-    runNotification(){getID}
-    }
+    public void runNotification();
 }

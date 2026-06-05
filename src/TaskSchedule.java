@@ -1,27 +1,41 @@
 import java.time.LocalDate;
-import java.util.Scanner;
+import java.time.LocalDateTime;
 
-public class TaskSchedule implements Displayable {
-    static void main(String[] args) {
+public class TaskSchedule extends ScheduleItem {
+    private LocalDate deadline;
+    private int progress;
+    private String assignedTo;
 
-        LocalDate deadline;
-        Scanner input = new Scanner(System.in);
-
-        int progress = 0;
-        while(progress < 100) {0}
-
-        String TaskSchedule = " ";
-        TaskSchedule taskSchedule = new TaskSchedule();
-
-        String assginedTo = input.nextLine();
-
-        System.out.print("Enter deadline for a task: ");
-        deadline = input.nextInt();
-        }
+    public TaskSchedule(
+            int id,
+            String title,
+            String description,
+            Priority priority,
+            TaskStatus taskStatus,
+            NotificationType notificationType,
+            LocalDate startDate,
+            LocalDate endDate,
+            LocalDateTime startTime,
+            LocalDateTime endTime,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt,
+            boolean isCompleted,
+            LocalDate deadline,
+            int progress,
+            String assignedTo) {
+        super(id, title, description, priority, taskStatus, notificationType,
+                startDate, endDate, startTime, endTime, createdAt, updatedAt, isCompleted);
+        this.deadline = deadline;
+        this.progress = progress;
+        this.assignedTo = assignedTo;
+    }
 
     @Override
     public void displayinfo() {
-
+        super.displayinfo();
+        System.out.println("종류: 과제 일정");
+        System.out.println("마감일: " + deadline);
+        System.out.println("진행률: " + progress + "%");
+        System.out.println("담당자: " + assignedTo);
     }
-}
 }
