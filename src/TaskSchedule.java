@@ -31,6 +31,12 @@ public class TaskSchedule extends ScheduleItem {
     }
 
     @Override
+    public String getScheduleType() {
+        return "과제 일정";
+    }
+
+    // T
+    @Override
     public void displayinfo() {
         super.displayinfo();
         System.out.println("종류: 과제 일정");

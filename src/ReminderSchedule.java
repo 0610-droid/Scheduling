@@ -4,9 +4,10 @@ import java.time.LocalDateTime;
 public class ReminderSchedule extends ScheduleItem {
     private LocalDateTime reminderTime;
     private String reminderMessage;
-    private boolean remindSent;
+    private boolean isremindSent;
 
     public ReminderSchedule(
+
             int id,
             String title,
             String description,
@@ -22,12 +23,23 @@ public class ReminderSchedule extends ScheduleItem {
             boolean isCompleted,
             LocalDateTime reminderTime,
             String reminderMessage,
-            boolean remindSent) {
-        super(id, title, description, priority, taskStatus, notificationType,
-                startDate, endDate, startTime, endTime, createdAt, updatedAt, isCompleted);
+
+            boolean remindSent, boolean isremindSent) {
+        super(id, title, description, priority, taskStatus, notificationType, startDate, endDate, startTime, endTime, createdAt, updatedAt, isCompleted);
         this.reminderTime = reminderTime;
         this.reminderMessage = reminderMessage;
-        this.remindSent = remindSent;
+        this.isremindSent = remindSent;
+    }
+
+    @Override
+    public String getScheduleType() {
+        return "알림 일정";
+    }
+
+    @Override
+    public void notifyUser() {
+        System.out.println("알림: " + reminderMessage);
+        isremindSent = true;
     }
 
     @Override
@@ -36,6 +48,6 @@ public class ReminderSchedule extends ScheduleItem {
         System.out.println("종류: 알림 일정");
         System.out.println("알림 시간: " + reminderTime);
         System.out.println("알림 메시지: " + reminderMessage);
-        System.out.println("알림 발송 여부: " + remindSent);
+        System.out.println("알림 발송 여부: " + isremindSent);
     }
 }

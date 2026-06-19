@@ -31,6 +31,11 @@ public class GeneralSchedule extends ScheduleItem {
     }
 
     @Override
+    public String getScheduleType() {
+        return "일반 일정";
+    }
+
+    @Override
     public void displayinfo() {
         super.displayinfo();
         System.out.println("종류: 일반 일정");

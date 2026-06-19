@@ -1,29 +1,29 @@
 public interface ScheduleFunction {
-    public void addSchedule();
+    void addSchedule();
 
-    public void displayAllSchedules();
+    void displayAllSchedules();
 
-    public void displayScheduleByID();
+    void displayScheduleByID();
 
-    public void updateSchedule();
+    void updateSchedule();
 
-    public void deleteSchedule();
+    void deleteSchedule();
 
-    public void completeSchedule();
+    void completeSchedule();
 
-    public void searchByTitle();
+    void searchByTitle();
 
-    public void searchByDate();
+    void searchByDate();
 
-    public void searchByPriority();
+    void searchByPriority();
 
-    public void sortByDate();
+    void sortByDate();
 
-    public void sortByPriority();
+    void sortByPriority();
 
-    public void sortByCompletion();
+    void sortByCompletion();
 
-    public void checkConflict();
+    void checkConflict();
 
-    public void runNotification();
+    void runNotification();
 }

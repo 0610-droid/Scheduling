@@ -25,12 +25,17 @@ public class MeetingSchedule extends ScheduleItem {
             String participants,
             String agenda,
             String host) {
-        super(id, title, description, priority, taskStatus, notificationType,
-                startDate, endDate, startTime, endTime, createdAt, updatedAt, isCompleted);
+
+        super(id, title, description, priority, taskStatus, notificationType, startDate, endDate, startTime, endTime, createdAt, updatedAt, isCompleted);
         this.location = location;
         this.participants = participants;
         this.agenda = agenda;
         this.host = host;
+    }
+
+    @Override
+    public String getScheduleType() {
+        return "회의 일정";
     }
 
     @Override

@@ -4,33 +4,45 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
-public class ScheduleItem implements Displayable, ScheduleFunction {
+public class ScheduleItem implements ScheduleFunction {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd"); //속성 3 검증
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm"); //속성 4검증
 
-    protected ScheduleItem[] schedule = new ScheduleItem[100];
-    protected int size = 0;
+    private ScheduleItem[] schedule = new ScheduleItem[100];
+    private int size = 0;
 
-    protected int id;
-    protected String title;
-    protected String description;
+    private Scanner scanner = new Scanner(System.in);
+
+    private int id;
+    private String title;
+
+    private String description;
 
     public enum Priority {LOW, MEDIUM, HIGH}
+
     public enum TaskStatus {TODO, IN_PROGRESS, DONE}
+
     public enum NotificationType {POPUP, SOUND, MESSAGE}
 
-    protected Priority priority;
-    protected TaskStatus taskStatus;
-    protected NotificationType notificationType;
+    private Priority priority;
 
-    protected LocalDate startDate;
-    protected LocalDate endDate;
-    protected LocalDateTime startTime;
-    protected LocalDateTime endTime;
-    protected LocalDateTime createdAt;
-    protected LocalDateTime updatedAt;
+    private TaskStatus taskStatus;
 
-    protected boolean isCompleted;
+    private NotificationType notificationType;
+
+    private LocalDate startDate;
+
+    private LocalDate endDate;
+
+    private LocalDateTime startTime;
+
+    private LocalDateTime endTime;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
+
+    private boolean isCompleted;
 
     public ScheduleItem() {
     }
@@ -48,8 +60,8 @@ public class ScheduleItem implements Displayable, ScheduleFunction {
             LocalDateTime endTime,
             LocalDateTime createdAt,
             LocalDateTime updatedAt,
-            boolean isCompleted) {
-        this.id = id;
+            boolean isCompleted)
+    {   this.id = id;
         this.title = title;
         this.description = description;
         this.priority = priority;
@@ -61,8 +73,7 @@ public class ScheduleItem implements Displayable, ScheduleFunction {
         this.endTime = endTime;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.isCompleted = isCompleted;
-    }
+        this.isCompleted = isCompleted; }
 
     public String getTitle() {
         return title;
@@ -168,28 +179,39 @@ public class ScheduleItem implements Displayable, ScheduleFunction {
         isCompleted = completed;
     }
 
+    public int getInt(String prompt) {
+        System.out.print(prompt);
+        int num = -1;
+        try {
+            num = Integer.parseInt(scanner.nextLine());
+        } catch (Exception e) {
+            System.out.println("숫자로 입력하세요");
+        }
+        return num;
+    }
+
     @Override
     public void addSchedule() {
         if (size >= schedule.length) {
-            System.out.println("더 이상 일정을 등록할 수 없습니다.");
+            System.out.println("더 이상 일정을 등록할 수 없습다.");
             return;
         }
 
-        Scanner scanner = new Scanner(System.in);
 
+        try {
         System.out.println("일정 종류를 선택하세요.");
         System.out.println("1 일반 일정");
         System.out.println("2 과제 일정");
         System.out.println("3 회의 일정");
         System.out.println("4 알림 일정");
-        System.out.print("선택: ");
-        int scheduleType = Integer.parseInt(scanner.nextLine());
+        int scheduleType = getInt("선택: ");
 
         int id = size + 1; //속성1 검증
         System.out.print("제목: ");
         String title = scanner.nextLine();
-        if (title == null || title.trim().isEmpty()) {
-            throw new IllegalArgumentException("제목은 비워둘 수 없습니다."); //속성2 검증
+        if (title.trim().isEmpty()) {
+            System.out.println("제목은 비워둘 수 없습니다."); //속성2 검증
+            return;
         }
 
         System.out.print("설명: ");
@@ -199,7 +221,7 @@ public class ScheduleItem implements Displayable, ScheduleFunction {
         Priority priority = Priority.valueOf(scanner.nextLine().trim().toUpperCase()); //속성 7 검증
 
         System.out.print("상태(TODO, IN_PROGRESS, DONE): ");
-        TaskStatus taskStatus = TaskStatus.valueOf(scanner.nextLine().trim().toUpperCase()); // 속성 9 검증
+        TaskStatus taskStatus = TaskStatus.valueOf(scanner.nextLine().trim().toUpperCase()); //속성 9 검증
 
         System.out.print("알림 방식(POPUP, SOUND, MESSAGE): ");
         NotificationType notificationType = NotificationType.valueOf(scanner.nextLine().trim().toUpperCase()); //속성 10 검증
@@ -240,8 +262,7 @@ public class ScheduleItem implements Displayable, ScheduleFunction {
             case 2:
                 System.out.print("마감일(yyyy-MM-dd): ");
                 LocalDate deadline = LocalDate.parse(scanner.nextLine(), DATE_FORMATTER);
-                System.out.print("진행률(0-100): ");
-                int progress = Integer.parseInt(scanner.nextLine());
+                int progress = getInt("진행률(0-100): ");
                 if (progress < 0 || progress > 100) {
                     System.out.println("진행률은 0 이상 100 이하만 가능합니다. 0으로 저장합니다."); //속성8
                     progress = 0;
@@ -253,7 +274,7 @@ public class ScheduleItem implements Displayable, ScheduleFunction {
                         startDate, endDate, startTime, endTime, now, now, false, deadline, progress, assignedTo);
                 break;
             case 3:
-                System.out.print("회의 장소: ");
+                System.out.print("회의장소: ");
                 String location = scanner.nextLine();
                 System.out.print("참석자: ");
                 String participants = scanner.nextLine();
@@ -275,7 +296,7 @@ public class ScheduleItem implements Displayable, ScheduleFunction {
 
                 newSchedule = new ReminderSchedule(id, title, description, priority, taskStatus, notificationType,
                         startDate, endDate, startTime, endTime, now, now, false,
-                        LocalDateTime.of(reminderDate, reminderClock), reminderMessage, false);
+                        LocalDateTime.of(reminderDate, reminderClock), reminderMessage, false, false);
                 break;
             default:
                 System.out.println("잘못된 일정 종류입니다.");
@@ -285,6 +306,9 @@ public class ScheduleItem implements Displayable, ScheduleFunction {
         schedule[size] = newSchedule;
         size++;
         System.out.println("일정이 등록되었습니다. ID: " + id);
+        } catch (Exception e) {
+            System.out.println("입력이 잘못되었습니다.");
+        }
     }
 
     @Override
@@ -302,9 +326,7 @@ public class ScheduleItem implements Displayable, ScheduleFunction {
 
     @Override
     public void displayScheduleByID() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("조회할 일정 ID: ");
-        int inputId = Integer.parseInt(scanner.nextLine());
+        int inputId = getInt("조회할 일정 ID: ");
 
         for (int i = 0; i < size; i++) {
             if (schedule[i].id == inputId) {
@@ -317,9 +339,7 @@ public class ScheduleItem implements Displayable, ScheduleFunction {
 
     @Override
     public void updateSchedule() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("수정할 일정 ID: ");
-        int inputId = Integer.parseInt(scanner.nextLine());
+        int inputId = getInt("수정할 일정 ID: ");
 
         ScheduleItem target = null;
         for (int i = 0; i < size; i++) {
@@ -335,9 +355,10 @@ public class ScheduleItem implements Displayable, ScheduleFunction {
         }
 
         System.out.println("수정할 항목을 선택하세요.");
-        System.out.println("1. 제목  2. 설명  3. 우선순위  4. 시작일  5. 종료일  6. 시작시간  7. 종료시간");
-        int choice = Integer.parseInt(scanner.nextLine());
+        System.out.println("1. 제목  2. 설명  3. 우선순위  4. 시작일  5. 종료일  6. 시작시간  7. 종료시간  8. 완료 여부");
+        int choice = getInt("선택: ");
 
+        try {
         switch (choice) {
             case 1:
                 System.out.print("새 제목: ");
@@ -372,17 +393,25 @@ public class ScheduleItem implements Displayable, ScheduleFunction {
                 System.out.print("종료시간 (HH:mm): ");
                 target.endTime = LocalDateTime.of(target.endDate, LocalTime.parse(scanner.nextLine(), TIME_FORMATTER));
                 break;
+            case 8:
+                System.out.print("완료 여부 (true/false): ");
+                target.isCompleted = Boolean.parseBoolean(scanner.nextLine().trim());
+                break;
+            default:
+                System.out.println("잘못된 선택입니다.");
+                return;
         }
 
         target.updatedAt = LocalDateTime.now();
         System.out.println("수정되었습니다.");
+        } catch (Exception e) {
+            System.out.println("잘못 입력했습니다.");
+        }
     }
 
     @Override
     public void deleteSchedule() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("삭제할 일정 ID: ");
-        int inputId = Integer.parseInt(scanner.nextLine());
+        int inputId = getInt("삭제할 일정 ID: ");
 
         for (int i = 0; i < size; i++) {
             if (schedule[i].id == inputId) {
@@ -401,9 +430,7 @@ public class ScheduleItem implements Displayable, ScheduleFunction {
 
     @Override
     public void completeSchedule() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("완료 처리할 일정 ID: ");
-        int inputId = Integer.parseInt(scanner.nextLine());
+        int inputId = getInt("완료 처리할 일정 ID: ");
 
         for (int i = 0; i < size; i++) {
             if (schedule[i].id == inputId) {
@@ -422,7 +449,6 @@ public class ScheduleItem implements Displayable, ScheduleFunction {
 
     @Override
     public void searchByTitle() {
-        Scanner scanner = new Scanner(System.in);
         System.out.print("검색할 제목: ");
         String keyword = scanner.nextLine();
 
@@ -439,7 +465,7 @@ public class ScheduleItem implements Displayable, ScheduleFunction {
 
     @Override
     public void searchByDate() {
-        Scanner scanner = new Scanner(System.in);
+        try {
         System.out.print("검색할 날짜 (yyyy-MM-dd): ");
         LocalDate targetDate = LocalDate.parse(scanner.nextLine(), DATE_FORMATTER);
 
@@ -452,11 +478,14 @@ public class ScheduleItem implements Displayable, ScheduleFunction {
             }
         }
         if (!found) System.out.println("검색 결과가 없습니다.");
+        } catch (Exception e) {
+            System.out.println("날짜 형식이 틀렸습니다.");
+        }
     }
 
     @Override
     public void searchByPriority() {
-        Scanner scanner = new Scanner(System.in);
+        try {
         System.out.print("검색할 우선순위 (LOW/MEDIUM/HIGH): ");
         Priority targetPriority = Priority.valueOf(scanner.nextLine().trim().toUpperCase());
 
@@ -468,7 +497,10 @@ public class ScheduleItem implements Displayable, ScheduleFunction {
                 found = true;
             }
         }
-        if (!found) System.out.println("검색 결과가 없습니다.");
+        if (!found) System.out.println("검색 결과가 없급니다.");
+        } catch (Exception e) {
+            System.out.println("잘못된 우선순위입니다.");
+        }
     }
 
     @Override
@@ -524,7 +556,7 @@ public class ScheduleItem implements Displayable, ScheduleFunction {
 
     @Override
     public void checkConflict() {
-        Scanner scanner = new Scanner(System.in);
+        try {
         System.out.print("시작일 (yyyy-MM-dd): ");
         LocalDate newStartDate = LocalDate.parse(scanner.nextLine(), DATE_FORMATTER);
         System.out.print("시작시간 (HH:mm): ");
@@ -537,18 +569,22 @@ public class ScheduleItem implements Displayable, ScheduleFunction {
         boolean conflict = false;
         for (int i = 0; i < size; i++) {
             if (newStartTime.isBefore(schedule[i].endTime) && newEndTime.isAfter(schedule[i].startTime)) {
-                System.out.println("충돌: " + schedule[i].title);
+                System.out.println("충돌: " + schedule[i].id + "," + schedule[i].title + "," + schedule[i].startDate + "," +
+                        schedule[i].startTime + "," + schedule[i].endDate + "," + schedule[i].endTime);
                 conflict = true;
             }
         }
-        if (!conflict) System.out.println("충돌하는 일정이 없습니다.");
+        if (!conflict) {
+            System.out.println("충돌하는 일정이 없습니다.");
+        }
+        } catch (Exception e) {
+            System.out.println("입력이 잘못되었습니다.");
+        }
     }
 
     @Override
     public void runNotification() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("알림 실행할 일정 ID: ");
-        int inputId = Integer.parseInt(scanner.nextLine());
+        int inputId = getInt("알림 실행할 일정 ID: ");
 
         for (int i = 0; i < size; i++) {
             if (schedule[i].id == inputId) {
@@ -560,9 +596,13 @@ public class ScheduleItem implements Displayable, ScheduleFunction {
     }
 
     public void notifyUser() {
+        System.out.println("이 일정은 알림 대상이 아닙니다.");
     }
 
-    @Override
+    public String getScheduleType() {
+        return "일정";
+    }
+
     public void displayinfo() { //BIG6
         System.out.println("ID: " + id);
         System.out.println("제목: " + title);
